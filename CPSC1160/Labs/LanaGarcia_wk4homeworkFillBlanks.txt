@@ -1,0 +1,12 @@
+//Name: Lana Cambeses
+//Student ID: 100411765
+//Title: CPSC 1160 - Week 4 Homework
+//Date: September 25, 2025
+
+Part A: Fill in the Blanks
+1. To access the element in the i-th row and j-th column of a 2D dynamic array `arr`, we use the
+expression __arr[i][i]__.
+2. A 3D dynamic array of integers can be declared as __int*** arr = new int**[x];___.
+3. If we dynamically allocate a 2D array, we need ___nested for___ loops to free the memory properly.
+4. In a 3D array `int*** book that has x pages, y lines per page and z integers per line, the total
+number of elements are __x*y*z_____.
