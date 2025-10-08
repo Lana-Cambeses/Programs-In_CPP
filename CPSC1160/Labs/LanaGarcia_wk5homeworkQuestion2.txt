@@ -1,0 +1,26 @@
+//Name: Lana Cambeses
+//Student ID: 100411765
+//Title: CPSC 1160 - Week 5 Homework
+//Date: October 7, 2025
+
+a. What is wrong with this solution? Explain clearly in your own words.
+
+The recursive call is not being returned. That means that once n == 0, the stack has no way of giving back the last total value on the way back.
+
+b. Fix the problem and write the corrected code. Clearly indicate which line(s) in your code
+belong to which of the 4 steps to designing recursive functions shown in class
+
+/* Step Process:
+    Step 1 (Smaller problem): The smaller problem to be treated is to choose a smaller n value (n - 1) to sum the total values [LINE 5]
+    Step 2 (Use solution of step 1 to solve the bigger problem): The bigger problem is solved by adding the current element to the total [LINE 4]
+    Step 3 (Find base cases): the base case will be if n reaches 0, meaning there is no smaller index to be added, we can return the total to each stack call [LINE 2]
+    Step 4 (Put steps into right order): The order is to set the base case first, then add the current n value to the total, to then call the function again
+*/
+
+Solution:
+int sumArray(int* arr, int n, int total) {
+    if (n == 0)
+        return total;
+    total += arr[n - 1];
+    return sumArray(arr, n - 1, total);
+}
