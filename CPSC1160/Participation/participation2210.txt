@@ -1,0 +1,15 @@
+Recurrence relation of:
+
+void fun(int n) {
+    if (n <= 1) {
+        return;
+    }
+    else {
+        fun (n/3);
+        fun (n/3);
+        fun (n/3);
+    }
+}
+
+ANSWER:  T(n) = 3T(n/3) + c when n > 1 , T(1) = 1
+         
