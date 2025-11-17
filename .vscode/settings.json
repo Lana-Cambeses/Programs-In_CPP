@@ -5,6 +5,9 @@
         "ostream": "cpp",
         "algorithm": "cpp",
         "format": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "array": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp"
     }
 }

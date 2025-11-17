@@ -1,3 +1,7 @@
+//Name: Lana Cambeses
+//Student ID: 100411765
+//Title: CPSC 1160 - Week 9 Homework
+//Date: November 13, 2025
 #ifndef FLEXIBLEARRAYOPERATORS_H
 #define FLEXIBLEARRAYOPERATORS_H
 
@@ -15,17 +19,39 @@ private:
     // If new_capacity < 1, it is set to 1.
     // all existing elements are copied to the new array in the same order.
     void resize(int new_capacity) {
-        // complete the code
+        if (new_capacity <= size) {
+            return;
+        } 
+        
+        if (new_capacity < 1) {
+            new_capacity = 1;
+        } 
+
+        int* new_data = new int[new_capacity];
+
+        for (int i = 0; i < size; i++) {
+            new_data[i] = data[i];
+        }
+        delete[] data;
+        data = new_data;
+        capacity = new_capacity;
+        
     }
 
     // Deallocates memory and sets data, size, and capacity to nullptr, 0 and 0 respectively.
     void deleteData() {
-        // complete the code
+        if (data) {
+            delete[] data;
+            data = nullptr;
+            size = 0;
+            capacity = 0;
+        }
     }
 
 public:
     // Default constructor: initializes empty array with capacity 1.
     FlexibleArrayOperators() {
+        data = nullptr;
         size = 0; 
         capacity = 1;
         data = new int[capacity];
@@ -35,18 +61,40 @@ public:
     // Example: FlexibleArrayOperators arr(a, 5); creates an array containing elements of a of size 5
     // If arr_size < 1, initializes to default state (see default constructor for default values).
     FlexibleArrayOperators(int *arr, int arr_size) {
-        // complete the code
+        data = nullptr;
+        if (arr_size < 1) {
+            size = 0; 
+            capacity = 1;
+            data = new int[capacity];
+        } else {
+            size = arr_size; 
+            capacity = arr_size;
+            data = new int[capacity];
+            for (int i = 0; i < size; i++) {
+                data[i] = arr[i];
+            }
+        }
     }
 
     // Constructor: creates an array with a single item.
     // Example: FlexibleArrayOperators arr(5); // creates an array of size 1 which contains value 5
     FlexibleArrayOperators(int item) {
-        // complete the code
+        data = nullptr;
+        size = 1; 
+        capacity = 1;
+        data = new int[capacity];
+        data[0] = item;
     }
 
     // Deep copy constructor: makes a DEEP copy of another FlexibleArrayOperators object.
     FlexibleArrayOperators(const FlexibleArrayOperators& other) {
-        // complete the code
+        this->data = nullptr;
+        this->capacity = other.capacity;
+        this->size = other.size;
+        this->data = new int[this->capacity];
+        for (int i = 0; i < this->capacity; i++) {
+            this->data[i] = other.data[i];
+        }
     }
 
     // Destructor: deallocates dynamic memory allocated within object.
@@ -91,42 +139,103 @@ public:
 
     // Clears the array, i.e. deallocates memory and sets data, size and capacity to default state (size 0, capacity 1).
     void clear() {
-        // complete the code
+        if (data) {
+            delete[] data;
+            data = nullptr;
+            size = 0;
+            capacity = 1;
+        }
     }
 
     // Adds value to end of array, resizing if necessary.
     // if the size equals capacity, it doubles its capacity (by calling resize first).
     void pushBack(int value) {
-        // complete the code
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+
+        data[size] = value;
+        size++;
     }
 
     // Adds value to front, all other elements shifted to the right by 1 position, resize if needed.
     // if the size equals capacity, it doubles its capacity (by calling resize first).
     void pushFront(int value) {
-        // complete the code
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+
+        for (int i = size; i > 0; i--) {
+            data[i] = data[i - 1];
+        }
+
+        data[0] = value;
+        size++;
+
     }
 
     // Inserts value at index. all elements from index to end of array are shifted to the right by 1
     // if the size equals capacity, it doubles its capacity (by calling resize first).
     void insertAt(int index, int value) {
-        // complete the code
+        if (index < 0 || index > size) {
+            cout << "Invalid index." << endl;
+            return;
+        }
+
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+
+        for (int i = size; i > index; i--) {
+            data[i] = data[i - 1];
+        }
+
+        data[index] = value;
+        size++;
     }
 
     // Removes last element.
     void popBack() {
-        // complete the code
+        if (size > 0) {
+            size--;
+        } else {
+            cout << "Can't reduce array.\n";
+        }
     }
 
     // Removes first element.
     // shift second element to first, third to second, and so on
     void popFront() {
-        // complete the code
+        if (size > 0) {
+
+            for (int i = 0; i < size - 1; i++) {
+                data[i] = data[i + 1];
+            }
+
+            size--;
+        } else {
+            cout << "Can't reduce array.\n";
+        }
+
     }
 
     // Removes value at index.
     // all elements from index+1 to end of array are shifted to the left by 1
     void removeAt(int index) {
-        // complete the code
+        if (size > 0) {
+            if (index < 0 || index >= size) {
+                cout << "Invalid index.\n";
+                return;
+            }
+
+            for (int i = index; i < size - 1; i++) {
+                data[i] = data[i + 1];
+            }
+
+            size--;
+        } else {
+            cout << "Can't reduce array.\n";
+        }
     }
     
     // Prints the array.
@@ -148,9 +257,20 @@ public:
     // arr2 = arr1; // arr2 should now contain 1, 2 (its own copy of the data from arr1)
     FlexibleArrayOperators& operator=(const FlexibleArrayOperators& other) {
         if (this == &other) {
-            return *this; // Handle self-assignment
+            return *this; 
         }
-        // complete the code
+
+        deleteData();
+
+        this->size = other.size;
+        this->capacity = other.capacity;
+        this->data = new int[this->capacity];
+
+        for (int i = 0; i < this->size; i++) {
+            this->data[i] = other.data[i];
+        }
+
+        return *this;
     }
 
     // Overload the + operator so that it can be used to join two FlexibleArrayOperators objects together into a new FlexibleArrayObject and return the newly created object.
@@ -161,7 +281,20 @@ public:
     // arr2.pushBack(3); arr2.pushBack(4);
     // arr3 = arr1 + arr2; // arr3 should contain 1, 2, 3, 4, arr1 should still contain 1, 2 and arr2 should still contain 3, 4
     FlexibleArrayOperators operator+(const FlexibleArrayOperators& other) const {
-        // complete the code
+        FlexibleArrayOperators result;
+        result.size = this->size + other.size;
+        result.capacity = result.size;
+        result.data = new int[result.capacity];
+
+        for (int i = 0; i < this->size; i++) {
+            result.data[i] = this->data[i];
+        }
+        for (int i = this->size, j = 0; i < result.size; i++, j++) {
+            result.data[i] = other.data[j];
+        }
+
+        return result;
+
     }
 
     // Overload the + operator so that it can be used to add a new integer value to the end of the current array and the resulting array is returned as a new FlexibleArrayOperators object.
@@ -170,7 +303,23 @@ public:
     // arr.pushBack(1); arr.pushBack(2);
     // arr2 = arr + 3; // arr2 should contain 1, 2, 3, arr should still contain 1, 2
     FlexibleArrayOperators operator+(int value) const {
-        // complete the code
+        FlexibleArrayOperators result;
+        result.size = this->size;
+        result.capacity = this->capacity;
+        result.data = new int[result.capacity];
+
+        for (int i = 0; i < this->size; i++) {
+            result.data[i] = this->data[i];
+        }
+
+        if (result.size == result.capacity) {
+            result.resize(result.capacity * 2);
+        }
+
+        result.data[result.size] = value;
+        result.size++;
+        
+        return result;
     }
     
     // Overload the += operator so that it can be used to join two FlexibleArrayOperators objects together into the current object.
@@ -180,7 +329,22 @@ public:
     // arr2.pushBack(3); arr2.pushBack(4);
     // arr1 += arr2; // arr1 should now contain 1, 2, 3, 4, arr2 should still contain 3, 4
     FlexibleArrayOperators& operator+=(const FlexibleArrayOperators& other) {
-        // complete the code
+        *this = *this + other; // Professor Muntaseer's tip
+        
+        // if (other.size == 0) {
+        //     return *this;
+        // } 
+        
+        // if (capacity < size + other.size) {
+        //     resize(size + other.size);               
+        // }
+
+        // for (int j = 0; j < other.size; ++j) {
+        //     data[size + j] = other.data[j];
+        // }
+
+        // size += other.size;
+        return *this;
     }
 
     // Overload the [] operator so that it can be used to access elements at a specific index.
@@ -189,7 +353,11 @@ public:
     // arr.pushBack(1); arr.pushBack(2);
     // cout << arr[0]; // Should output 1
     int operator[](int index) const {
-        // complete the code
+        if (index < 0 || index >= size) {
+            cout << "Error: Index out of bounds." << endl;
+            return 0;
+        }
+        return data[index];
     }
 
     // Overload the ! operator so that it can be used to check if the array is empty.
@@ -197,7 +365,11 @@ public:
     // Example: FlexibleArrayOperators arr;
     // if (!arr) { cout << "Array is empty"; }
     bool operator!() const {
-        // complete the code
+        if (size <= 0) {
+            return true;
+        }
+
+        return false;
     }
 
     // Overload prefix ++ operator so that it increments every element in the array (of the calling object) by 1 and then proceeds to increment the size of the array by 1 (also set 0 as the initial value of the newly added position)
@@ -205,7 +377,17 @@ public:
     // arr.pushBack(1); arr.pushBack(2);
     // arr2 = ++arr; // at the end of this statement arr should contain 2, 3, 0 and arr2 should also contain 2, 3, 0
     FlexibleArrayOperators& operator++() {
-        // complete the code
+        for (int i = 0; i < size; i++) {
+            data[i]++;
+        }
+
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+
+        data[size] = 0;
+        size++;
+        return *this;
     }
 
     // Overload postfix ++ operator so that it increments every element in the array (of the calling object) by 1 and then proceeds to increment the size of the array by 1 (also set 0 as the initial value of the newly added position)
@@ -213,7 +395,20 @@ public:
     // arr.pushBack(1); arr.pushBack(2);
     // arr2 = arr++; // at the end of this statement arr should contain 2, 3, 0 and arr2 should contain 1, 2
     FlexibleArrayOperators operator++(int dummy) {
-        // complete the code
+        FlexibleArrayOperators temp = *this;
+
+        for (int i = 0; i < size; i++) {
+            data[i]++;
+        }
+
+        if (size == capacity) {
+            resize(capacity * 2);
+        }
+
+        data[size] = 0;
+        size++; 
+
+        return temp;
     }
 
     // Overload the >> operator as a friend function so that it can be used to read values into the array from an input stream (e.g., std::cin).
@@ -236,11 +431,39 @@ public:
 
 
 istream& operator>>(istream& in, FlexibleArrayOperators& arr) {
-    // complete the code
+    arr.clear();
+
+    cout << "Enter the size of the array: ";
+    int newSize;
+    in >> newSize;
+
+    if (newSize < 0) {
+        cout << "Invalid size.\n";
+        return in;
+    }
+
+    arr.size = newSize;
+    arr.capacity = arr.size * 2;
+    arr.data = new int[arr.capacity];
+
+    cout << "Enter " << arr.size << " elements: ";
+    for (int i = 0; i < arr.size; i++) {
+        in >> arr.data[i];
+    }
+
+    return in;
+    
 }
 
 ostream& operator<<(ostream& out, const FlexibleArrayOperators& arr) {
-    // complete the code
+    out << "Size: " << arr.size << ", Capacity: " << arr.capacity << ", Data: [";
+    for (int i = 0; i < arr.size; ++i) {
+        out << arr.data[i];
+        if (i < arr.size - 1)
+            out << ", ";
+    }
+    out << "]" << endl;
+    return out;
 }
 
 #endif
