@@ -1,0 +1,21 @@
+amazon
+Electronics,Smartphone,699.99,15
+Books,The Great Gatsby,12.50,30
+Clothing,T-Shirt,19.99,50
+Grocery,Organic Apples,3.49,100
+Home,Vacuum Cleaner,89.95,10
+Electronics,Laptop,1099.00,8
+Books,Python Programming,45.00,20
+Clothing,Jeans,39.99,25
+Grocery,Milk,2.99,60
+Home,Desk Lamp,24.99,18
+Electronics,Wireless Earbuds,59.99,40
+Books,World Atlas,29.95,12
+Clothing,Sneakers,59.99,22
+Grocery,Bread,1.99,80
+Home,Blender,49.99,14
+Electronics,Smartwatch,199.99,17
+Books,History of Art,35.00,9
+Clothing,Jacket,89.99,13
+Grocery,Orange Juice,4.25,55
+Home,Wall Clock,15.99,27
